@@ -1,0 +1,41 @@
+version: '3'
+services:
+  wordpress:
+    #can change to other Wordpress image
+    image: wordpress
+    container_name: wordpress
+    hostname: wordpress
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - "/opt/data/wp:/var/www/html"
+    environment:
+      WORDPRESS_DB_HOST: 'mysql'
+      WORDPRESS_DB_USER: <username>
+      WORDPRESS_DB_PASSWORD: <password>
+      WORDPRESS_DB_NAME: 'wordpress'
+    networks:
+      - wordpress-network
+
+  mysql:
+    image: mysql
+    container_name: mysql
+    hostname: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - "/opt/data/mysql:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: '<root_password>'
+      MYSQL_DATABASE: 'wordpress'
+      MYSQL_USER: '<username>'
+      MYSQL_PASSWORD: '<password>'
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+      TERM: xterm
+    networks:
+      - wordpress-network
+
+networks:
+  wordpress-network:
